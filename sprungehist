@@ -6,8 +6,10 @@ COLRESET='\033[0m'
 case "$1" in
     "-help")
       echo ""
-      echo "Sprunge with link history addon"
+      echo "     Sprunge CLI pastebin with history addon"
+      echo "Uploading a file: './sprungehist <file_location>'"
       echo ""
+      echo "Other:"
       echo "-help         Help"
       echo "-history      View history"
       echo "-history_del  Delete history"
