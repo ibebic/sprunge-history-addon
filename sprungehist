@@ -1,0 +1,34 @@
+#!/bin/sh
+
+LIGHTBLUE='\033[1;34m'
+COLRESET='\033[0m'
+
+case "$1" in
+    "-help")
+      echo ""
+      echo "Sprunge with link history addon"
+      echo ""
+      echo "-help         Help"
+      echo "-history      View history"
+      echo "-history_del  Delete history"
+      echo ""
+      exit 0;
+    ;;
+    "-history")
+      cat ~/.sprunge_history
+      exit 0;
+    ;;
+    "-history_del")
+      rm ~/.sprunge_history
+      echo "$(date +"%d-%m-%y %H:%M %Z")  Previous history deleted" >> ~/.sprunge_history
+      echo "History deleted!"
+      exit 0;
+    ;;
+esac
+
+URL=$(cat "$1" | curl -sSLF 'sprunge=<-' http://sprunge.us)
+SNIPPET=$(head -c 35 "$1" | tr '\n' ';')
+SNIPPET="$SNIPPET..."
+
+echo "$(date +"%d-%m-%y %H:%M %Z")  ${LIGHTBLUE}$URL${COLRESET}  ($SNIPPET)" >> ~/.sprunge_history
+echo "${LIGHTBLUE}$URL${COLRESET}"
