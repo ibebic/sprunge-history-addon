@@ -26,9 +26,13 @@ case "$1" in
     ;;
 esac
 
-URL=$(cat "$1" | curl -sSLF 'sprunge=<-' http://sprunge.us)
-SNIPPET=$(head -c 35 "$1" | tr '\n' ';')
-SNIPPET="$SNIPPET..."
-
-echo "$(date +"%d-%m-%y %H:%M %Z")  ${LIGHTBLUE}$URL${COLRESET}  ($SNIPPET)" >> ~/.sprunge_history
-echo "${LIGHTBLUE}$URL${COLRESET}"
+if [ -e "$1" ]
+then
+  URL=$(cat "$1" | curl -sSLF 'sprunge=<-' http://sprunge.us)
+  SNIPPET=$(head -c 35 "$1" | tr '\n' ';')
+  SNIPPET="$SNIPPET..."
+  echo "$(date +"%d-%m-%y %H:%M %Z")  ${LIGHTBLUE}$URL${COLRESET}  ($SNIPPET)" >> ~/.sprunge_history
+  echo "${LIGHTBLUE}$URL${COLRESET}"
+else
+  echo "File ${LIGHTBLUE}$1${COLRESET} not found."
+fi
