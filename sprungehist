@@ -4,34 +4,50 @@ LIGHTBLUE='\033[1;34m'
 COLRESET='\033[0m'
 
 case "$1" in
-    "-help")
+    "-h"|"--help")
       echo ""
       echo "     Sprunge CLI pastebin with history addon"
-      echo "Uploading a file: './sprungehist <file_location>'"
+      echo "Uploading a file: 'sprungehist <file_location>'"
       echo ""
       echo "Other:"
-      echo "-help         Help"
-      echo "-history      View history"
-      echo "-history_del  Delete history"
-      echo ""
+      echo "-h  --help         Help"
+      echo "-H  --history      View history"
+      echo "-d  --history_del  Delete history"
+      echo "-b  --backup       Upload history to Sprunge URL"
+      echo "-l  --load         Load history from Sprunge URL"
       exit 0;
     ;;
-    "-history")
+    "-H"|"--history")
       cat ~/.sprunge_history
       exit 0;
     ;;
-    "-history_del")
+    "-d"|"--history_del")
       rm ~/.sprunge_history
       echo "$(date +"%d-%m-%y %H:%M %Z")  Previous history deleted" >> ~/.sprunge_history
       echo "History deleted!"
       exit 0;
     ;;
+    "-b"|"--backup")
+      BACKUP=$(cat ~/.sprunge_history | curl -sSLF 'sprunge=<-' http://sprunge.us)
+      echo "History saved to: ${LIGHTBLUE}$BACKUP${COLRESET}"
+      exit 0;
+    ;;
+    "-l"|"--load")
+    if [ -n "$2" ]
+    then
+      curl -sL "$2" ~/.sprunge_history
+      echo "History load successful"
+      exit 0;
+    else
+      echo "Missing link to history"
+      exit 0;
+    fi
 esac
 
 if [ -e "$1" ]
 then
   URL=$(cat "$1" | curl -sSLF 'sprunge=<-' http://sprunge.us)
-  SNIPPET=$(head -c 35 "$1" | tr '\n' ';')
+  SNIPPET=$(head -c 30 "$1" | tr '\n' ';')
   SNIPPET="$SNIPPET..."
   echo "$(date +"%d-%m-%y %H:%M %Z")  ${LIGHTBLUE}$URL${COLRESET}  ($SNIPPET)" >> ~/.sprunge_history
   echo "${LIGHTBLUE}$URL${COLRESET}"
