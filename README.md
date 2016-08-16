@@ -6,8 +6,8 @@ For more info on Sprunge, visit: http://sprunge.us or http://github.com/rupa/spr
 To upload a file: <code>./sprungehist "file_path" </code>
 
 Other:
-<table>
-<tr><td>-help</td><td>Help</td></tr>
-<tr><td>-history</td><td>View history</td></tr>
-<tr><td>-history_del</td><td>Delete history</td></tr>
-</table>
+|-h|--help|Help|
+|-H|--history|View history|
+|-d|--history_del|Delete history|
+|-b|--backup|Upload history to Sprunge URL|
+|-l|--load|Load history from Sprunge URL|
